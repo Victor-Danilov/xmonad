@@ -143,6 +143,9 @@ myKeys conf@(XConfig {XMonad.modMask = modm}) = M.fromList $
     -- Night light settings
     , ((modm, 		    xK_F2), spawn "redshift -O 3000")
     , ((modm, 		    xK_F3), spawn "redshift -x")
+
+    -- Lockscreen
+    , ((mod4Mask .|. shiftMask, xK_l), spawn "i3lock")
     ]
     ++
 
