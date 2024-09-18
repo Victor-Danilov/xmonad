@@ -145,7 +145,7 @@ myKeys conf@(XConfig {XMonad.modMask = modm}) = M.fromList $
     , ((modm, 		    xK_F3), spawn "redshift -x")
 
     -- Lockscreen
-    , ((mod4Mask .|. shiftMask, xK_l), spawn "i3lock")
+    , ((modm .|. shiftMask, xK_l), spawn "i3lock")
     ]
     ++
 
