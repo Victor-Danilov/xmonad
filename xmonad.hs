@@ -141,7 +141,7 @@ myKeys conf@(XConfig {XMonad.modMask = modm}) = M.fromList $
     , ((0, 		    xF86XK_AudioRaiseVolume), spawn "pactl set-sink-volume @DEFAULT_SINK@ +10%")
 
     -- Night light settings
-    , ((modm, 		    xK_F2), spawn "redshift -O 3000")
+    , ((modm, 		    xK_F2), spawn "redshift -O 4300")
     , ((modm, 		    xK_F3), spawn "redshift -x")
 
     -- Lockscreen
