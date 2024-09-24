@@ -4,6 +4,7 @@ import Graphics.X11.ExtraTypes.XF86
 import XMonad
 import Data.Monoid
 import System.Exit
+import XMonad.Layout.Spacing
 import XMonad.Hooks.ManageDocks
 import XMonad.Util.Run 
 import XMonad.Util.SpawnOnce
@@ -133,7 +134,7 @@ myKeys conf@(XConfig {XMonad.modMask = modm}) = M.fromList $
     , ((0,                  xF86XK_MonBrightnessDown), spawn "lux -s 10%")
 
     -- Shutdown
-    , ((modm,               xK_F4), spawn "shutdown now")
+    , ((modm .|. shiftMask, xK_F4), spawn "shutdown now")
 
     -- Volume control
     , ((0, 		    xF86XK_AudioMute), spawn "pactl set-sink-mute @DEFAULT_SINK@ toggle")
@@ -197,19 +198,25 @@ myMouseBindings (XConfig {XMonad.modMask = modm}) = M.fromList $
 -- The available layouts.  Note that each layout is separated by |||,
 -- which denotes layout choice.
 --
-myLayout = avoidStruts (tiled ||| Mirror tiled ||| Full)
-  where
-     -- default tiling algorithm partitions the screen into two panes
-     tiled   = Tall nmaster delta ratio
+--myLayout = avoidStruts (tiled ||| Mirror tiled ||| Full)
+--  where
+--     -- default tiling algorithm partitions the screen into two panes
+--     tiled   = Tall nmaster delta ratio
+--
+--     -- The default number of windows in the master pane
+--     nmaster = 1
+--
+--     -- Default proportion of screen occupied by master pane
+--     ratio   = 1/2
+--
+--     -- Percent of screen to increment by when resizing panes
+--     delta   = 3/100
 
-     -- The default number of windows in the master pane
-     nmaster = 1
+myLayout = avoidStruts $ spacing 7 $ Tall 1 (3/100) (1/2) 
+-- spacingRaw False (Border 2 2 2 2) True (Border 2 2 2 2) True $
+ --Tall 1 (3/100) (1/2) ||| Full
 
-     -- Default proportion of screen occupied by master pane
-     ratio   = 1/2
 
-     -- Percent of screen to increment by when resizing panes
-     delta   = 3/100
 
 ------------------------------------------------------------------------
 -- Window rules:
@@ -278,7 +285,6 @@ main = do
 -- use the defaults defined in xmonad/XMonad/Config.hs
 --
 -- No need to modify this.
---
 defaults = def {
       -- simple stuff
         terminal           = myTerminal,
