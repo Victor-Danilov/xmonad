@@ -27,7 +27,7 @@ myClickJustFocuses = False
 
 -- Width of the window border in pixels.
 --
-myBorderWidth  = 2 
+myBorderWidth  = 1 
 
 -- modMask lets you specify which modkey you want to use. The default
 -- is mod1Mask ("left alt").  You may also consider using mod3Mask
@@ -137,16 +137,17 @@ myKeys conf@(XConfig {XMonad.modMask = modm}) = M.fromList $
     , ((modm .|. shiftMask, xK_F4), spawn "shutdown now")
 
     -- Volume control
-    , ((0, 		    xF86XK_AudioMute), spawn "pactl set-sink-mute @DEFAULT_SINK@ toggle")
-    , ((0, 		    xF86XK_AudioLowerVolume), spawn "pactl set-sink-volume @DEFAULT_SINK@ -10%")
-    , ((0, 		    xF86XK_AudioRaiseVolume), spawn "pactl set-sink-volume @DEFAULT_SINK@ +10%")
+
+    , ((0,                  xF86XK_AudioMute), spawn "pactl set-sink-mute @DEFAULT_SINK@ toggle && pactl get-sink-volume @DEFAULT_SINK@ | grep -o '[0-9]\\+%' | head -n 1 | xargs -I {} dunstify -r 9993 'Volume: {}'")
+    , ((0,                  xF86XK_AudioLowerVolume), spawn "pactl set-sink-volume @DEFAULT_SINK@ -10% && pactl get-sink-volume @DEFAULT_SINK@ | grep -o '[0-9]\\+%' | head -n 1 | xargs -I {} dunstify -r 9993 'Volume: {}'")
+    , ((0,                  xF86XK_AudioRaiseVolume), spawn "pactl set-sink-volume @DEFAULT_SINK@ +10% && pactl get-sink-volume @DEFAULT_SINK@ | grep -o '[0-9]\\+%' | head -n 1 | xargs -I {} dunstify -r 9993 'Volume: {}'")
 
     -- Night light settings
     , ((modm, 		    xK_F2), spawn "redshift -O 4300")
     , ((modm, 		    xK_F3), spawn "redshift -x")
 
     -- Lockscreen
-    , ((modm .|. shiftMask, xK_l), spawn "i3lock")
+    , ((modm .|. shiftMask, xK_l), spawn "betterlockscreen -l")
     ]
     ++
 
@@ -212,7 +213,7 @@ myMouseBindings (XConfig {XMonad.modMask = modm}) = M.fromList $
 --     -- Percent of screen to increment by when resizing panes
 --     delta   = 3/100
 
-myLayout = avoidStruts $ spacing 7 $ Tall 1 (3/100) (1/2) 
+myLayout = avoidStruts $ smartSpacing 17 $ Tall 1 (3/100) (1/2) ||| Full
 -- spacingRaw False (Border 2 2 2 2) True (Border 2 2 2 2) True $
  --Tall 1 (3/100) (1/2) ||| Full
 
@@ -266,9 +267,11 @@ myLogHook = return ()
 -- per-workspace layout choices.
 --
 -- By default, do nothing.
-myStartupHook = do
-	spawnOnce "nitrogen --restore &"
-	safeSpawn "setxbmap" ["it"]
+myStartupHook = 
+    spawnOnce "picom --config ~/.config/picom/picom.conf &" >>
+	spawnOnce "nitrogen --restore &" >> -- Se ripristini lo sfondo
+	spawnOnce "~/./firefox_no_sleep.sh &" >> -- anti sospensione per firefox
+    safeSpawn "setxbmap" ["it"]
 
 ------------------------------------------------------------------------
 -- Now run xmonad with all the defaults we set up.
