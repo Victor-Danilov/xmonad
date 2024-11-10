@@ -1,1 +1,1 @@
-# This are my XMonad configs 
+# This is my XMonad configuration 
