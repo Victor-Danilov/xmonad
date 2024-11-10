@@ -50,7 +50,7 @@ myWorkspaces    = ["1","2","3","4","5","6","7","8","9"]
 -- Border colors for unfocused and focused windows, respectively.
 --
 myNormalBorderColor  = "#dddddd"
-myFocusedBorderColor = "#ff0000"
+myFocusedBorderColor = "#13a3d1"
 
 ------------------------------------------------------------------------
 -- Key bindings. Add, modify or remove key bindings here.
@@ -148,6 +148,9 @@ myKeys conf@(XConfig {XMonad.modMask = modm}) = M.fromList $
 
     -- Lockscreen
     , ((modm .|. shiftMask, xK_l), spawn "betterlockscreen -l")
+
+    -- Screenshot keybindings
+    , ((modm .|. shiftMask, xK_p), spawn "flameshot gui")
     ]
     ++
 
@@ -213,7 +216,7 @@ myMouseBindings (XConfig {XMonad.modMask = modm}) = M.fromList $
 --     -- Percent of screen to increment by when resizing panes
 --     delta   = 3/100
 
-myLayout = avoidStruts $ smartSpacing 17 $ Tall 1 (3/100) (1/2) ||| Full
+myLayout = avoidStruts $ smartSpacing 10 $ Tall 1 (3/100) (1/2) ||| Full
 -- spacingRaw False (Border 2 2 2 2) True (Border 2 2 2 2) True $
  --Tall 1 (3/100) (1/2) ||| Full
 
