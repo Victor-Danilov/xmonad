@@ -61,10 +61,16 @@ myKeys conf@(XConfig {XMonad.modMask = modm}) = M.fromList $
     [ ((modm .|. shiftMask, xK_Return), spawn $ XMonad.terminal conf)
 
     -- launch dmenu
-    , ((modm,               xK_p     ), spawn "dmenu_run")
+    -- , ((modm,               xK_p     ), spawn "dmenu_run")
+
+    -- launch rofi
+    , ((modm,               xK_p), spawn "rofi -show run")
 
     -- launch gmrun
     , ((modm .|. shiftMask, xK_p     ), spawn "gmrun")
+
+    -- launch chromium
+    , ((modm,               xK_c     ), spawn "chromium")
 
     -- close focused window
     , ((modm .|. shiftMask, xK_c     ), kill)
@@ -270,10 +276,11 @@ myLogHook = return ()
 -- per-workspace layout choices.
 --
 -- By default, do nothing.
-myStartupHook = 
-    spawnOnce "picom --config ~/.config/picom/picom.conf &" >>
-	spawnOnce "nitrogen --restore &" >> -- Se ripristini lo sfondo
-	spawnOnce "~/./firefox_no_sleep.sh &" >> -- anti sospensione per firefox
+myStartupHook =
+    spawn "redshift -O 4300" >>                                 -- Per protezione occhi
+    spawnOnce "picom --config ~/.config/picom/picom.conf &" >>  -- Per terminale trasparente
+	spawnOnce "nitrogen --restore &" >>                         -- Se ripristini lo sfondo
+	spawnOnce "~/./firefox_no_sleep.sh &" >>                    -- anti sospensione per firefox
     safeSpawn "setxbmap" ["it"]
 
 ------------------------------------------------------------------------
